@@ -145,7 +145,6 @@ python -m pytest -q
 ## Documentation
 
 * [Python examples](docs/python_examples.md)
-* [Python implementation guide](docs/python_port.md)
 
 ## License
 
