@@ -1,0 +1,77 @@
+@prefix bot: <https://w3id.org/bot#> .
+@prefix inst: <https://example.org/building#> .
+@prefix opm: <https://w3id.org/opm#> .
+@prefix props: <https://w3id.org/props#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+inst:site_2AgY62olP0JRV2nKtmb7jt a <https://standards.buildingsmart.org/IFC/DEV/IFC4/ADD2/OWL#IfcSite>,
+        bot:Site ;
+    rdfs:label "Default" ;
+    bot:hasBuilding inst:building_2AgY62olP0JRV2nKtmb7jq ;
+    props:globalIdIfcRoot "2AgY62olP0JRV2nKtmb7jt" .
+
+inst:building_2AgY62olP0JRV2nKtmb7jq a <https://standards.buildingsmart.org/IFC/DEV/IFC4/ADD2/OWL#IfcBuilding>,
+        bot:Building ;
+    bot:hasStorey inst:buildingstorey_2AgY62olP0JRV2nKqFQv4%24 ;
+    props:globalIdIfcRoot "2AgY62olP0JRV2nKtmb7jq" ;
+    props:numberOfStoreys inst:property_Pset_BuildingCommon_NumberOfStoreys_320 .
+
+inst:buildingstorey_2AgY62olP0JRV2nKqFQv4%24 a <https://standards.buildingsmart.org/IFC/DEV/IFC4/ADD2/OWL#IfcBuildingStorey>,
+        bot:Storey ;
+    rdfs:label "Level 04 - T.O. Fnd. Wall" ;
+    bot:containsElement inst:wallstandardcase_212thNVN51thzynFSw_BYL,
+        inst:wallstandardcase_212thNVN51thzynFSw_BbA ;
+    props:aboveGround inst:property_Pset_BuildingStoreyCommon_AboveGround_296 ;
+    props:globalIdIfcRoot "2AgY62olP0JRV2nKqFQv4$" .
+
+inst:property_Pset_BuildingCommon_NumberOfStoreys_320 a opm:Property ;
+    opm:hasPropertyState 1 .
+
+inst:property_Pset_BuildingStoreyCommon_AboveGround_296 a opm:Property ;
+    opm:hasPropertyState "UNKNOWN" .
+
+inst:property_Pset_WallCommon_ExtendToStructure_236 a opm:Property ;
+    opm:hasPropertyState false .
+
+inst:property_Pset_WallCommon_ExtendToStructure_278 a opm:Property ;
+    opm:hasPropertyState false .
+
+inst:property_Pset_WallCommon_IsExternal_236 a opm:Property ;
+    opm:hasPropertyState true .
+
+inst:property_Pset_WallCommon_IsExternal_278 a opm:Property ;
+    opm:hasPropertyState true .
+
+inst:property_Pset_WallCommon_LoadBearing_236 a opm:Property ;
+    opm:hasPropertyState true .
+
+inst:property_Pset_WallCommon_LoadBearing_278 a opm:Property ;
+    opm:hasPropertyState true .
+
+inst:property_Pset_WallCommon_Reference_236 a opm:Property ;
+    opm:hasPropertyState "Generic - 8\"" .
+
+inst:property_Pset_WallCommon_Reference_278 a opm:Property ;
+    opm:hasPropertyState "Generic - 8\"" .
+
+inst:wallstandardcase_212thNVN51thzynFSw_BYL a <https://standards.buildingsmart.org/IFC/DEV/IFC4/ADD2/OWL#IfcWallStandardCase>,
+        bot:Element,
+        <https://w3id.org/product#WallStandardCase> ;
+    rdfs:label "Basic Wall:Generic - 8\":277804" ;
+    props:extendToStructure inst:property_Pset_WallCommon_ExtendToStructure_278 ;
+    props:globalIdIfcRoot "212thNVN51thzynFSw_BYL" ;
+    props:isExternal inst:property_Pset_WallCommon_IsExternal_278 ;
+    props:loadBearing inst:property_Pset_WallCommon_LoadBearing_278 ;
+    props:reference inst:property_Pset_WallCommon_Reference_278 .
+
+inst:wallstandardcase_212thNVN51thzynFSw_BbA a <https://standards.buildingsmart.org/IFC/DEV/IFC4/ADD2/OWL#IfcWallStandardCase>,
+        bot:Element,
+        <https://w3id.org/product#WallStandardCase> ;
+    rdfs:label "Basic Wall:Generic - 8\":277747" ;
+    props:extendToStructure inst:property_Pset_WallCommon_ExtendToStructure_236 ;
+    props:globalIdIfcRoot "212thNVN51thzynFSw_BbA" ;
+    props:isExternal inst:property_Pset_WallCommon_IsExternal_236 ;
+    props:loadBearing inst:property_Pset_WallCommon_LoadBearing_236 ;
+    props:reference inst:property_Pset_WallCommon_Reference_236 .
+

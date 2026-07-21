@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ifctolbd"
+version = "2.49.0"
+description = "Native Python IFC to Linked Building Data converter"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+  "rdflib>=7.0",
+  "ifcopenshell>=0.8.0",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110", "python-multipart>=0.0.9", "uvicorn>=0.27"]
+desktop = ["pyside6>=6.7"]
+excel = ["openpyxl>=3.1"]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+ifctolbd = "ifctolbd.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ifctolbd*"]
+
