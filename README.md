@@ -3,8 +3,8 @@
 IFCtoLBD converts Industry Foundation Classes (IFC) models into RDF graphs
 that use the Linked Building Data ontologies. This is a native Python
 implementation built with [IfcOpenShell](https://ifcopenshell.org/) and
-[RDFLib](https://rdflib.readthedocs.io/); Java, a JVM, and JPype are not
-required.
+[RDFLib](https://rdflib.readthedocs.io/); 
+
 
 The converter supports IFC STEP files (`.ifc`) and IFCZIP archives (`.ifczip`
 or `.zip`). It can write Turtle, JSON-LD, RDF/XML, and other formats supported
