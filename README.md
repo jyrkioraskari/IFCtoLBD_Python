@@ -12,7 +12,7 @@ by RDFLib.
 
 
 
-!\[A Screen QT](screen.png)
+!\[A Screen QT](Screen1.png)
 
 
 
@@ -36,20 +36,20 @@ On Windows, activate the environment with:
 
 ```bat
 py -m venv .venv
-.venv\\Scripts\\activate.bat
+.venv\\\\Scripts\\\\activate.bat
 ```
 
 Optional dependency groups are available for the REST API, desktop UI, Excel
 reports, and tests:
 
 ```bash
-python -m pip install -e '.\[api,desktop,excel,test]'
+python -m pip install -e '.\\\[api,desktop,excel,test]'
 ```
 
 On Windows:
 
 ```bat
-py -m pip install -e ".\[api,desktop,excel,test]"
+py -m pip install -e ".\\\[api,desktop,excel,test]"
 ```
 
 ## Quick start
@@ -58,26 +58,26 @@ The repository includes a small two-wall IFC model. Run the example from the
 repository root:
 
 ```bash
-python examples/basic\_conversion.py
+python examples/basic\\\_conversion.py
 ```
 
 On Windows:
 
 ```bat
-py examples\\basic\_conversion.py
+py examples\\\\basic\\\_conversion.py
 ```
 
-It creates `two\_walls.ttl` and reports the number of RDF triples. To convert
+It creates `two\\\_walls.ttl` and reports the number of RDF triples. To convert
 another model:
 
 ```bash
-python examples/basic\_conversion.py path/to/model.ifc --output model.ttl
+python examples/basic\\\_conversion.py path/to/model.ifc --output model.ttl
 ```
 
 On Windows:
 
 ```bat
-py examples\\basic\_conversion.py path\\to\\model.ifc --output model.ttl
+py examples\\\\basic\\\_conversion.py path\\\\to\\\\model.ifc --output model.ttl
 ```
 
 ## Command line
@@ -111,9 +111,9 @@ the package is installed.
 from ifctolbd import ConversionProperties, IFCtoLBDConverter
 
 options = ConversionProperties(
-    has\_geometry=False,
-    has\_geolocation=True,
-    has\_units=True,
+    has\\\_geometry=False,
+    has\\\_geolocation=True,
+    has\\\_units=True,
 )
 
 with IFCtoLBDConverter("https://example.org/building#", level=3) as converter:
@@ -125,11 +125,11 @@ print(f"Generated {len(graph)} triples")
 
 `convert()` returns an `rdflib.Graph`, so standard RDFLib operations such as
 `triples()`, `subjects()`, `query()`, and `serialize()` can be used directly.
-For a one-step conversion, use `convert\_to\_file()`:
+For a one-step conversion, use `convert\\\_to\\\_file()`:
 
 ```python
 with IFCtoLBDConverter() as converter:
-    converter.convert\_to\_file("model.ifczip", "model.jsonld")
+    converter.convert\\\_to\\\_file("model.ifczip", "model.jsonld")
 ```
 
 ## Optional interfaces
@@ -137,14 +137,14 @@ with IFCtoLBDConverter() as converter:
 ### REST API
 
 ```bash
-python -m pip install -e '.\[api]'
+python -m pip install -e '.\\\[api]'
 uvicorn ifctolbd.api:app
 ```
 
 On Windows:
 
 ```bat
-py -m pip install -e ".\[api]"
+py -m pip install -e ".\\\[api]"
 py -m uvicorn ifctolbd.api:app
 ```
 
@@ -156,54 +156,54 @@ documentation is available at `http://127.0.0.1:8000/docs` while it is running.
 The minimal built-in desktop window (PySide6):
 
 ```bash
-python -m pip install -e '.\[desktop]'
+python -m pip install -e '.\\\[desktop]'
 python -m ifctolbd.desktop
 ```
 
 On Windows:
 
 ```bat
-py -m pip install -e ".\[desktop]"
+py -m pip install -e ".\\\[desktop]"
 py -m ifctolbd.desktop
 ```
 
 The full Qt replica of the JavaFX IFCtoLBD\_Desktop\_2026 application lives in
-[`IFCtoLBD\_Desktop\_2026\_Qt`](IFCtoLBD_Desktop_2026_Qt/README.md):
+[`IFCtoLBD\\\_Desktop\\\_2026\\\_Qt`](IFCtoLBD_Desktop_2026_Qt/README.md):
 
 ```bash
-python -m pip install -e '.\[desktop]' PySide6 pyshacl
-python IFCtoLBD\_Desktop\_2026\_Qt/main.py
+python -m pip install -e '.\\\[desktop]' PySide6 pyshacl
+python IFCtoLBD\\\_Desktop\\\_2026\\\_Qt/main.py
 ```
 
 On Windows:
 
 ```bat
-py -m pip install -e ".\[desktop]" PySide6 pyshacl
-py IFCtoLBD\_Desktop\_2026\_Qt\\main.py
+py -m pip install -e ".\\\[desktop]" PySide6 pyshacl
+py IFCtoLBD\\\_Desktop\\\_2026\\\_Qt\\\\main.py
 ```
 
 ### Excel property reports
 
 ```python
-from ifctolbd.report import write\_property\_report
+from ifctolbd.report import write\\\_property\\\_report
 
-write\_property\_report(graph, "properties.xlsx")
+write\\\_property\\\_report(graph, "properties.xlsx")
 ```
 
-Install this feature with `python -m pip install -e '.\[excel]'`
-(`py -m pip install -e ".\[excel]"` on Windows).
+Install this feature with `python -m pip install -e '.\\\[excel]'`
+(`py -m pip install -e ".\\\[excel]"` on Windows).
 
 ## Testing
 
 ```bash
-python -m pip install -e '.\[test]'
+python -m pip install -e '.\\\[test]'
 python -m pytest -q
 ```
 
 On Windows:
 
 ```bat
-py -m pip install -e ".\[test]"
+py -m pip install -e ".\\\[test]"
 py -m pytest -q
 ```
 
