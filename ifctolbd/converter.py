@@ -5,6 +5,7 @@ import json
 import re
 import tempfile
 import zipfile
+from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Mapping
 from urllib.parse import quote
@@ -12,7 +13,7 @@ from urllib.parse import quote
 from rdflib import BNode, Graph, Literal, Namespace, RDF, RDFS, URIRef, XSD
 
 from .config import ConversionProperties
-from .namespaces import BOT, FOG, GEO, IFCOWL_BASE, OMG, OPM, PROPS
+from .namespaces import BOT, FOG, GEO, IFCOWL_BASE, LBD, OMG, OPM, PROPS
 
 
 SUPPORTED_SCHEMAS = {
@@ -45,6 +46,8 @@ class IFCtoLBDConverter:
         if self.level not in (1, 2, 3):
             raise ValueError("Property level must be 1, 2, or 3")
         self.property_replace_map: dict[str, str] = {}
+        self.selected_types: set[str] | None = None
+        self.selected_psets: set[str] | None = None
         self.model = Graph()
 
     def setProperty_replace_map(self, replacements: Mapping[str, str] | str) -> None:
@@ -56,6 +59,21 @@ class IFCtoLBDConverter:
         self.property_replace_map = {str(k): str(v) for k, v in replacements.items()}
 
     set_property_replace_map = setProperty_replace_map
+
+    def setSelected_types(self, selected_types: Iterable[str] | None) -> None:
+        """Limit conversion to these concrete IFC element types.
+
+        ``None`` disables filtering; an empty collection intentionally selects
+        no elements, matching the desktop check-tree behaviour.
+        """
+        self.selected_types = None if selected_types is None else {str(value) for value in selected_types}
+
+    def setSelected_psets(self, selected_psets: Iterable[str] | None) -> None:
+        """Limit property conversion to the selected IFC property-set names."""
+        self.selected_psets = None if selected_psets is None else {str(value) for value in selected_psets}
+
+    set_selected_types = setSelected_types
+    set_selected_psets = setSelected_psets
 
     def convert(self, ifc_file: str | Path, properties: ConversionProperties | None = None) -> Graph:
         props = properties or ConversionProperties()
@@ -137,7 +155,8 @@ class IFCtoLBDConverter:
     def _new_graph(self, model: Any) -> Graph:
         graph = Graph()
         for prefix, ns in {"bot": BOT, "props": PROPS, "opm": OPM, "omg": OMG,
-                           "fog": FOG, "geo": GEO, "inst": Namespace(self.base_uri)}.items():
+                           "fog": FOG, "lbd": LBD, "geo": GEO,
+                           "inst": Namespace(self.base_uri)}.items():
             graph.bind(prefix, ns)
         return graph
 
@@ -181,6 +200,8 @@ class IFCtoLBDConverter:
         for entity in self._entities(model, "IfcElement"):
             if entity.is_a() in excluded:
                 continue
+            if self.selected_types is not None and entity.is_a() not in self.selected_types:
+                continue
             uri = resources[entity.id()] = self._uri(entity)
             self.model.add((uri, RDF.type, BOT.Element))
             product_type = URIRef(f"https://w3id.org/product#{_safe(entity.is_a()[3:])}")
@@ -201,6 +222,9 @@ class IFCtoLBDConverter:
         for rel in self._entities(model, "IfcRelDefinesByProperties"):
             definition = getattr(rel, "RelatingPropertyDefinition", None)
             if definition is None:
+                continue
+            pset_name = str(getattr(definition, "Name", None) or definition.is_a())
+            if self.selected_psets is not None and pset_name not in self.selected_psets:
                 continue
             values = list(self._property_values(definition))
             for entity in getattr(rel, "RelatedObjects", ()):
@@ -278,6 +302,10 @@ class IFCtoLBDConverter:
         except ImportError as exc:
             raise RuntimeError("Geometry conversion requires ifcopenshell.geom") from exc
         settings = ifcopenshell.geom.settings()
+        # OBJ fragments must share one coordinate system before the desktop
+        # viewer/exporter merges them. Without this, every product is drawn at
+        # its local origin and the building collapses into an overlapping blob.
+        settings.set(settings.USE_WORLD_COORDS, True)
         for entity_id, uri in list(resources.items()):
             entity = model.by_id(entity_id)
             if not getattr(entity, "Representation", None):
@@ -294,11 +322,36 @@ class IFCtoLBDConverter:
             self.model.add((uri, OMG.hasGeometry, geometry))
             self.model.add((geometry, RDF.type, GEO.Geometry))
             self.model.add((geometry, FOG["asObj_v3.0-obj"], Literal(encoded)))
+            self._add_geometry_material(geometry, shape.geometry)
             if props.has_bounding_box_wkt and verts:
                 xyz = list(zip(verts[0::3], verts[1::3], verts[2::3]))
                 lo = tuple(min(p[n] for p in xyz) for n in range(3))
                 hi = tuple(max(p[n] for p in xyz) for n in range(3))
                 self.model.add((geometry, GEO.asWKT, Literal(self._box_wkt(lo, hi), datatype=GEO.wktLiteral)))
+
+    def _add_geometry_material(self, geometry: URIRef, shape_geometry: Any) -> None:
+        """Write the dominant IfcOpenShell material in LBD OBJ Exporter form."""
+        materials = list(getattr(shape_geometry, "materials", ()) or ())
+        if not materials:
+            return
+        material_ids = [int(value) for value in (getattr(shape_geometry, "material_ids", ()) or ())
+                        if 0 <= int(value) < len(materials)]
+        material_index = Counter(material_ids).most_common(1)[0][0] if material_ids else 0
+        material = materials[material_index]
+        diffuse = getattr(material, "diffuse", None)
+        if diffuse is not None:
+            try:
+                kd = f"{diffuse.r():.6g} {diffuse.g():.6g} {diffuse.b():.6g}"
+                self.model.add((geometry, LBD.asMTL_kd, Literal(kd)))
+            except (AttributeError, TypeError, ValueError):
+                pass
+        try:
+            transparency = float(getattr(material, "transparency", 0.0) or 0.0)
+        except (TypeError, ValueError):
+            transparency = 0.0
+        if transparency > 0.0:
+            opacity = max(0.0, min(1.0, 1.0 - transparency))
+            self.model.add((geometry, LBD.asMTL_alpha, Literal(opacity)))
 
     @staticmethod
     def _box_wkt(lo: tuple[float, ...], hi: tuple[float, ...]) -> str:

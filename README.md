@@ -3,12 +3,18 @@
 IFCtoLBD converts Industry Foundation Classes (IFC) models into RDF graphs
 that use the Linked Building Data ontologies. This is a native Python
 implementation built with [IfcOpenShell](https://ifcopenshell.org/) and
-[RDFLib](https://rdflib.readthedocs.io/); 
-
+[RDFLib](https://rdflib.readthedocs.io/); Java, a JVM, and JPype are not
+required.
 
 The converter supports IFC STEP files (`.ifc`) and IFCZIP archives (`.ifczip`
 or `.zip`). It can write Turtle, JSON-LD, RDF/XML, and other formats supported
 by RDFLib.
+
+
+
+!\[A Screen QT](screen.png)
+
+
 
 ## Requirements
 
@@ -28,8 +34,9 @@ python -m pip install -e .
 
 On Windows, activate the environment with:
 
-```powershell
-.venv\\Scripts\\Activate.ps1
+```bat
+py -m venv .venv
+.venv\\Scripts\\activate.bat
 ```
 
 Optional dependency groups are available for the REST API, desktop UI, Excel
@@ -37,6 +44,12 @@ reports, and tests:
 
 ```bash
 python -m pip install -e '.\[api,desktop,excel,test]'
+```
+
+On Windows:
+
+```bat
+py -m pip install -e ".\[api,desktop,excel,test]"
 ```
 
 ## Quick start
@@ -48,11 +61,23 @@ repository root:
 python examples/basic\_conversion.py
 ```
 
+On Windows:
+
+```bat
+py examples\\basic\_conversion.py
+```
+
 It creates `two\_walls.ttl` and reports the number of RDF triples. To convert
 another model:
 
 ```bash
 python examples/basic\_conversion.py path/to/model.ifc --output model.ttl
+```
+
+On Windows:
+
+```bat
+py examples\\basic\_conversion.py path\\to\\model.ifc --output model.ttl
 ```
 
 ## Command line
@@ -77,7 +102,8 @@ Common options include:
 ```
 
 Run `ifctolbd --help` for the complete command reference. The RDF format is
-inferred from the output filename.
+inferred from the output filename. The command works the same on Windows once
+the package is installed.
 
 ## Python API
 
@@ -115,14 +141,45 @@ python -m pip install -e '.\[api]'
 uvicorn ifctolbd.api:app
 ```
 
+On Windows:
+
+```bat
+py -m pip install -e ".\[api]"
+py -m uvicorn ifctolbd.api:app
+```
+
 The service exposes `GET /hello` and `POST /convertIFCtoLBD`. Interactive API
 documentation is available at `http://127.0.0.1:8000/docs` while it is running.
 
 ### Desktop application
 
+The minimal built-in desktop window (PySide6):
+
 ```bash
 python -m pip install -e '.\[desktop]'
 python -m ifctolbd.desktop
+```
+
+On Windows:
+
+```bat
+py -m pip install -e ".\[desktop]"
+py -m ifctolbd.desktop
+```
+
+The full Qt replica of the JavaFX IFCtoLBD\_Desktop\_2026 application lives in
+[`IFCtoLBD\_Desktop\_2026\_Qt`](IFCtoLBD_Desktop_2026_Qt/README.md):
+
+```bash
+python -m pip install -e '.\[desktop]' PySide6 pyshacl
+python IFCtoLBD\_Desktop\_2026\_Qt/main.py
+```
+
+On Windows:
+
+```bat
+py -m pip install -e ".\[desktop]" PySide6 pyshacl
+py IFCtoLBD\_Desktop\_2026\_Qt\\main.py
 ```
 
 ### Excel property reports
@@ -133,7 +190,8 @@ from ifctolbd.report import write\_property\_report
 write\_property\_report(graph, "properties.xlsx")
 ```
 
-Install this feature with `python -m pip install -e '.\[excel]'`.
+Install this feature with `python -m pip install -e '.\[excel]'`
+(`py -m pip install -e ".\[excel]"` on Windows).
 
 ## Testing
 
@@ -142,9 +200,17 @@ python -m pip install -e '.\[test]'
 python -m pytest -q
 ```
 
+On Windows:
+
+```bat
+py -m pip install -e ".\[test]"
+py -m pytest -q
+```
+
 ## Documentation
 
 * [Python examples](docs/python_examples.md)
+* [Python implementation guide](docs/python_port.md)
 
 ## License
 

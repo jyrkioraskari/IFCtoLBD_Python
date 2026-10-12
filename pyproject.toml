@@ -16,7 +16,13 @@ dependencies = [
 
 [project.optional-dependencies]
 api = ["fastapi>=0.110", "python-multipart>=0.0.9", "uvicorn>=0.27"]
-desktop = ["pyside6>=6.7"]
+desktop = [
+  "pyside6>=6.7",
+  "numpy>=1.26",
+  "pyvista>=0.44",
+  "pyvistaqt>=0.11",
+  "pyshacl>=0.25",
+]
 excel = ["openpyxl>=3.1"]
 test = ["pytest>=8.0"]
 
