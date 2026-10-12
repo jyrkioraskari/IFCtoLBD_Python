@@ -12,8 +12,7 @@ by RDFLib.
 
 
 
-![A Screen QT](Screen1.png)
-
+<img src="Screen1.png" alt="A Screen QT" width="500">
 
 
 ## Requirements
