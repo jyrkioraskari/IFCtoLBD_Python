@@ -1,0 +1,48 @@
+{
+  "@context": "https://codemeta.github.io/codemeta/2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "ifctolbd",
+  "name": "IFCtoLBD Python",
+  "description": "Native Python IFC to Linked Building Data converter. IFCtoLBD converts Industry Foundation Classes (IFC) models into RDF graphs that use the Linked Building Data ontologies. It is built with IfcOpenShell and RDFLib and supports IFC STEP files (.ifc) and IFCZIP archives (.ifczip or .zip), writing Turtle, JSON-LD, RDF/XML, and other formats supported by RDFLib.",
+  "codeRepository": "https://github.com/jyrkioraskari/IFCtoLBD_Python",
+  "issueTracker": "https://github.com/jyrkioraskari/IFCtoLBD_Python/issues",
+  "programmingLanguage": [
+    "Python"
+  ],
+  "version": "2.49.0",
+  "author": [
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-4723-3878",
+      "givenName": "Jyrki",
+      "familyName": "Oraskari",
+      "email": "jyrki.oraskari@dc.rwth-aachen.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "RWTH Aachen University"
+      }
+    }
+  ],
+  "license": [
+    "https://spdx.org/licenses/Apache-2.0"
+  ],
+  "keywords": [
+    "IFC",
+    "BIM",
+    "RDF",
+    "Linked Building Data",
+    "LBD",
+    "ifcOWL",
+    "BOT",
+    "ontology",
+    "semantic web",
+    "IfcOpenShell",
+    "RDFLib"
+  ],
+  "softwareRequirements": [
+    "rdflib>=7.0",
+    "ifcopenshell>=0.8.0"
+  ],
+  "dateCreated": "2026-07-21",
+  "dateModified": "2026-10-12"
+}

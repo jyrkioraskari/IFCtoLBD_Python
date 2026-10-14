@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+title: IFCtoLBD Python
+type: software
+authors:
+  - family-names: Oraskari
+    given-names: Jyrki
+    orcid: "https://orcid.org/0000-0002-4723-3878"
+    affiliation: RWTH Aachen University
+    email: jyrki.oraskari@dc.rwth-aachen.de
+identifiers:
+  - type: url
+    value: "https://github.com/jyrkioraskari/IFCtoLBD_Python"
+    description: GitHub repository
+repository-code: "https://github.com/jyrkioraskari/IFCtoLBD_Python"
+url: "https://github.com/jyrkioraskari/IFCtoLBD_Python"
+abstract: >-
+  IFCtoLBD converts Industry Foundation Classes (IFC) models into RDF
+  graphs that use the Linked Building Data ontologies. This is a native
+  Python implementation built with IfcOpenShell and RDFLib; Java, a JVM,
+  and JPype are not required. The converter supports IFC STEP files (.ifc)
+  and IFCZIP archives (.ifczip or .zip), and can write Turtle, JSON-LD,
+  RDF/XML, and other formats supported by RDFLib.
+keywords:
+  - IFC
+  - BIM
+  - RDF
+  - Linked Building Data
+  - LBD
+  - ifcOWL
+  - BOT
+  - ontology
+  - semantic web
+  - IfcOpenShell
+  - RDFLib
+license: Apache-2.0
+version: 2.49.0
+date-released: "2026-10-14"
